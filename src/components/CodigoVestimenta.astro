@@ -1,0 +1,144 @@
+---
+// CodigoVestimenta.astro
+---
+<section class="py-2 px-4">
+  <div class="max-w-xl mx-auto text-center">
+   
+    <!-- 🌸 SEPARADOR SUPERIOR -->
+    <div class="flex justify-center mb-2" id="separador-superior">
+      <img
+        src="/imagenes/celeste.gif"
+        alt="Separador decorativo"
+        class="w-52 md:w-48 lg:w-56 h-auto object-contain"
+      />
+    </div>
+    
+    <!-- TÍTULO CÓDIGO DE VESTIMENTA -->
+    <div class="mb-4" id="titulo-vestimenta">
+      <h2
+        class="font-charm text-2xl md:text-3xl text-[#D4AF37] font-bold tracking-wide"
+      >
+        CÓDIGO DE VESTIMENTA
+      </h2>
+    </div>
+    
+    <!-- 👔 IMAGEN VESTIMENTA -->
+    <div class="flex justify-center mb-4" id="imagen-vestimenta">
+      <img
+        src="/imagenes/Vestimenta.png"
+        alt="Código de vestimenta"
+        class="w-20 h-auto md:w-72 lg:w-80 object-contain icono-dorado"
+      />
+    </div>
+    
+    <!-- DESCRIPCIÓN -->
+    <div class="mb-3" id="descripcion-vestimenta">
+      <p
+        class="font-charm text-2xl md:text-3xl text-[#D4AF37] font-bold leading-relaxed"
+      >
+        Formal
+      </p>
+    </div>
+    
+    <!-- NOTA IMPORTANTE -->
+    <div class="mb-2" id="nota-vestimenta">
+      <p
+        class="font-charm text-xl md:text-lg text-[#eb8fa3] leading-relaxed"
+      >
+        Color reservado para la quinceañera: palo de rosa y rosa bebé
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+ 
+  gsap.registerPlugin(ScrollTrigger);
+ 
+  if (typeof window !== "undefined") {
+    document.addEventListener("DOMContentLoaded", () => {
+      // Estado inicial
+      gsap.set("#separador-superior", { opacity: 0, scale: 0.8 });
+      gsap.set("#titulo-vestimenta", { opacity: 0, scale: 0.9 });
+      gsap.set("#imagen-vestimenta", { opacity: 0, scale: 0.8 });
+      gsap.set("#descripcion-vestimenta", { opacity: 0, scale: 0.9 });
+      gsap.set("#nota-vestimenta", { opacity: 0, scale: 0.9 });
+     
+      // ✨ ANIMACIÓN SIMULTÁNEA - TODO AL MISMO TIEMPO
+      ScrollTrigger.create({
+        trigger: "#separador-superior",
+        start: "top 85%",
+        end: "top 20%",
+        onEnter: () => {
+          const tl = gsap.timeline();
+         
+          // TODO aparece al mismo tiempo
+          tl.to("#separador-superior, #titulo-vestimenta, #imagen-vestimenta, #descripcion-vestimenta, #nota-vestimenta", {
+            opacity: 1,
+            duration: 1,
+            ease: "power2.out",
+          })
+          // Animaciones individuales (simultáneas)
+          .to("#separador-superior", {
+            scale: 1,
+            duration: 1,
+            ease: "back.out(1.5)",
+          }, "<")
+          .to("#titulo-vestimenta, #descripcion-vestimenta, #nota-vestimenta", {
+            scale: 1,
+            duration: 1,
+            ease: "back.out(1.2)",
+          }, "<")
+          .to("#imagen-vestimenta", {
+            scale: 1,
+            duration: 1,
+            ease: "back.out(1.5)",
+          }, "<");
+        },
+        onLeaveBack: () => {
+          // Salida simultánea
+          const tl = gsap.timeline();
+          
+          tl.to("#separador-superior, #titulo-vestimenta, #imagen-vestimenta, #descripcion-vestimenta, #nota-vestimenta", {
+            opacity: 0,
+            duration: 0.5,
+            ease: "power2.in",
+          })
+          .to("#separador-superior", {
+            scale: 0.8,
+            duration: 0.5,
+            ease: "power2.in",
+          }, "<")
+          .to("#titulo-vestimenta, #descripcion-vestimenta, #nota-vestimenta", {
+            scale: 0.9,
+            duration: 0.5,
+            ease: "power2.in",
+          }, "<")
+          .to("#imagen-vestimenta", {
+            scale: 0.8,
+            duration: 0.5,
+            ease: "power2.in",
+          }, "<");
+        },
+      });
+     
+      console.log("👔 Sección de Código de Vestimenta inicializada");
+    });
+  }
+</script>
+
+
+<style>
+  
+ 
+  
+  /* Filtro dorado para #D4AF37 */
+  .icono-dorado {
+    filter: brightness(0) saturate(100%) invert(72%) sepia(53%) saturate(465%) hue-rotate(2deg) brightness(99%) contrast(88%);
+    transition: filter 0.3s ease, transform 0.3s ease;
+  }
+
+  
+</style>

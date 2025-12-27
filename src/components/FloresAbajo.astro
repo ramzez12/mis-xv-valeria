@@ -1,0 +1,199 @@
+---
+// Final.astro
+---
+
+<section class="relative w-full xl:px-40 overflow-hidden" id="seccion-final">
+  
+  <!-- CONTENEDOR DE MARIPOSAS FLOTANTES -->
+  <div class="relative w-full h-32 md:h-40 lg:h-48" id="mariposas-final">
+    
+    <!-- Mariposa 1 - Izquierda -->
+    <div class="absolute left-[10%] top-[20%] mariposa-flotante" id="mariposa-final-1">
+      <img
+        src="/gif/pajarito.png"
+        alt="Mariposa"
+        class="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 object-contain"
+      />
+    </div>
+
+    <!-- Mariposa 2 - Centro izquierda -->
+    <div class="absolute left-[25%] top-[50%] mariposa-flotante" id="mariposa-final-2">
+      <img
+        src="/imagenes/pajarocafe.png"
+        alt="Mariposa"
+        class="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 object-contain scale-x-[-1]"
+      />
+    </div>
+
+    <!-- Mariposa 3 - Centro derecha -->
+    <div class="absolute right-[25%] top-[45%] mariposa-flotante" id="mariposa-final-4">
+      <img
+        src="/imagenes/pajarocafe.png"
+        alt="Mariposa"
+        class="w-9 h-9 md:w-11 md:h-11 lg:w-13 lg:h-13 object-contain"
+      />
+    </div>
+
+    <!-- Mariposa 4 - Derecha -->
+    <div class="absolute right-[10%] top-[25%] mariposa-flotante" id="mariposa-final-5">
+      <img
+        src="/gif/pajarito.png"
+        alt="Mariposa"
+        class="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 object-contain scale-x-[-1]"
+      />
+    </div>
+
+  </div>
+
+  <!-- ===== CONTENEDOR CON IMAGEN SOBRE FLORES ===== -->
+  <div class="relative w-full" id="imagen-flores-container">
+    
+    <!-- FLORES ABAJO - FULL WIDTH VOLTEADAS -->
+    <div class="relative w-full" id="flores-final">
+      <img
+        src="/imagenes/FloresArriba.webp"
+        alt="Flores decorativas finales"
+        class="w-full h-auto object-cover object-center block rotate-180"
+      />
+    </div>
+
+    <!-- IMAGEN QUINCEAÑERA SOBRE LAS FLORES -->
+    <div class="absolute inset-0 flex items-center justify-center px-4" id="imagen-quinceañera-container">
+      <div class="max-w-xl md:max-w-2xl lg:max-w-3xl w-full" id="imagen-quinceañera">
+        <img
+          src="/imagenes/Quinceañera.webp"
+          alt="Quinceañera"
+          class="w-96 h-96 object-contain drop-shadow-2xl"
+        />
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  if (typeof window !== 'undefined') {
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log("🦋 Iniciando sección final...");
+
+      // 🎯 ESTADO INICIAL
+      gsap.set("#flores-final", { opacity: 0, y: 30 });
+      gsap.set("#imagen-quinceañera", { opacity: 0, scale: 0.9, y: 40 });
+      gsap.set(".mariposa-flotante", { opacity: 0, scale: 0.5, y: -20 });
+
+      // ✨ ANIMACIÓN CONJUNTA DE TODA LA SECCIÓN
+      ScrollTrigger.create({
+        trigger: "#seccion-final",
+        start: "top 80%",
+        end: "top 20%",
+        onEnter: () => {
+          const tl = gsap.timeline();
+
+          // Todos los elementos aparecen al mismo tiempo
+          tl.to("#flores-final", {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+          }, 0) // 0 = inicio del timeline
+          .to("#imagen-quinceañera", {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+          }, 0) // 0 = mismo tiempo que flores
+          .to(".mariposa-flotante", {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "back.out(1.5)",
+            stagger: 0.08,
+          }, 0); // 0 = mismo tiempo que todo
+
+          // 🦋 ANIMACIONES CONTINUAS DE MARIPOSAS (después de aparecer)
+          gsap.to("#mariposa-final-1", {
+            y: -15,
+            x: 10,
+            rotation: 5,
+            duration: 3,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1,
+            delay: 0.8,
+          });
+
+          gsap.to("#mariposa-final-2", {
+            y: -20,
+            x: -8,
+            rotation: -3,
+            duration: 3.5,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1,
+            delay: 1,
+          });
+
+          gsap.to("#mariposa-final-4", {
+            y: -12,
+            x: 12,
+            rotation: -5,
+            duration: 3.2,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1,
+            delay: 1.2,
+          });
+
+          gsap.to("#mariposa-final-5", {
+            y: -16,
+            x: -10,
+            rotation: 4,
+            duration: 3.8,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1,
+            delay: 1.4,
+          });
+        },
+        onLeaveBack: () => {
+          gsap.set("#flores-final", { opacity: 0, y: 30 });
+          gsap.set("#imagen-quinceañera", { opacity: 0, scale: 0.9, y: 40 });
+          gsap.set(".mariposa-flotante", { opacity: 0, scale: 0.5, y: -20 });
+        },
+      });
+
+      console.log("🦋✨ ¡Sección final activada con animación conjunta!");
+    });
+  }
+</script>
+
+<style>
+  /* Asegurar que las mariposas tengan un movimiento fluido */
+  .mariposa-flotante {
+    will-change: transform;
+    transition: all 0.3s ease;
+  }
+
+  /* Hover en las mariposas */
+  .mariposa-flotante:hover {
+    transform: scale(1.1) !important;
+    filter: brightness(1.2);
+  }
+
+  /* Transición suave en la imagen */
+  #imagen-quinceañera img {
+    transition: transform 0.5s ease;
+  }
+
+  #imagen-quinceañera:hover img {
+    transform: scale(1.03);
+  }
+</style>

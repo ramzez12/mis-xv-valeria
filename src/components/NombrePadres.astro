@@ -1,0 +1,134 @@
+<!-- Padres.astro -->
+
+<section class=" pt-8  relative ">
+  <div class="max-w-5xl mx-auto relative">
+    <!-- Adorno izquierdo -->
+    <div class="absolute left-0 top-0 w-16 md:w-20 lg:w-28 pointer-events-none" id="adorno-izq">
+      <img src="/imagenes/FlorLateral.webp" alt="Adorno floral" class="w-16 h-full object-contain object-left" />
+    </div>
+
+    <!-- Contenido central -->
+    <div class="max-w-xl mx-auto text-center relative z-10 px-16 md:px-24 lg:px-32">
+      <!-- SECCIÓN 1: MIS PADRES -->
+      <div id="seccion-padres">
+        <h2 class="font-charm text-xl text-[#D4AF37] font-bold mb-1">
+          MIS PADRES
+        </h2>
+        <div class="space-y-2">
+          <p class="font-charm text-xl text-[#eb8fa3]">Gudnar Calle Vargas</p>
+          <p class="font-charm text-xl text-[#eb8fa3]">Arianne Castro Valle</p>
+        </div>
+      </div>
+
+      <!-- SECCIÓN 2: MIS PADRINOS -->
+      <div id="seccion-padrinos" class="pt-4">
+        <h2 class="font-charm text-xl text-[#D4AF37] font-bold mb-1">
+          MIS HERMANOS
+        </h2>
+        <div>
+          <p class="font-charm text-xl text-[#eb8fa3]">Gudnar Andrés Calle Castro</p>
+          <p class="font-charm text-xl text-[#eb8fa3]">Mariana Fernanda Calle Castro</p>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Adorno derecho -->
+    <div class="absolute right-0 top-0 w-16 md:w-20 lg:w-28 pointer-events-none" id="adorno-der">
+      <img src="/imagenes/FlorLateral.webp" alt="Adorno floral" class="w-16 h-full object-contain object-right scale-x-[-1]" />
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  if (typeof window !== 'undefined') {
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log("👨‍👩‍👧 Iniciando animaciones de familia...");
+
+      // 🎯 ESTADO INICIAL - Todo oculto
+      gsap.set("#seccion-mama", { opacity: 0, y: 30 });
+      gsap.set("#seccion-hermano", { opacity: 0, y: 30 });
+      gsap.set("#seccion-madrinas", { opacity: 0, y: 30 });
+      gsap.set("#adorno-izq", { opacity: 0, x: -30 });
+      gsap.set("#adorno-der", { opacity: 0, x: 30 });
+
+      // 📍 SCROLLTRIGGER PARA ACTIVAR LA ANIMACIÓN
+      ScrollTrigger.create({
+        trigger: "#seccion-mama",
+        start: "top 90%",
+        end: "top 20%",
+        
+        onEnter: () => {
+          console.log("✨ Todo aparece simultáneamente...");
+          animarSimultaneo();
+        },
+        
+        onLeaveBack: () => {
+          console.log("👋 Ocultando sección familia...");
+          ocultarSimultaneo();
+        },
+      });
+
+      // 🎬 ANIMACIÓN SIMULTÁNEA - TODO AL MISMO TIEMPO
+      function animarSimultaneo() {
+        const tl = gsap.timeline();
+
+        // TODO aparece al mismo tiempo con la misma duración
+        tl.to("#adorno-izq, #adorno-der, #seccion-mama, #seccion-hermano, #seccion-madrinas", {
+          opacity: 1,
+          duration: 1,
+          ease: "power2.out",
+        })
+        // Movimientos individuales (simultáneos)
+        .to("#adorno-izq", {
+          x: 0,
+          duration: 1,
+          ease: "power2.out",
+        }, "<")
+        .to("#adorno-der", {
+          x: 0,
+          duration: 1,
+          ease: "power2.out",
+        }, "<")
+        .to("#seccion-mama, #seccion-hermano, #seccion-madrinas", {
+          y: 0,
+          duration: 1,
+          ease: "power2.out",
+        }, "<");
+      }
+
+      // 🔙 ANIMACIÓN DE SALIDA SIMULTÁNEA
+      function ocultarSimultaneo() {
+        const tl = gsap.timeline();
+
+        // TODO desaparece al mismo tiempo
+        tl.to("#adorno-izq, #adorno-der, #seccion-mama, #seccion-hermano, #seccion-madrinas", {
+          opacity: 0,
+          duration: 0.5,
+          ease: "power2.in",
+        })
+        // Movimientos individuales (simultáneos)
+        .to("#adorno-izq", {
+          x: -30,
+          duration: 0.5,
+          ease: "power2.in",
+        }, "<")
+        .to("#adorno-der", {
+          x: 30,
+          duration: 0.5,
+          ease: "power2.in",
+        }, "<")
+        .to("#seccion-mama, #seccion-hermano, #seccion-madrinas", {
+          y: 30,
+          duration: 0.5,
+          ease: "power2.in",
+        }, "<");
+      }
+    });
+  }
+</script>
