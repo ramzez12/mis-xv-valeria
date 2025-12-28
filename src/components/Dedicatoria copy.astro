@@ -1,0 +1,179 @@
+---
+// Pergamino.astro
+---
+
+<section class="py-4 md:py-12 px-4 relative overflow-hidden">
+  <div class="max-w-5xl mx-auto">
+     
+    <div class="flex justify-center " id="flores-arriba-ded">
+      <img
+        src="/imagenes/FlorSeparador.webp"
+        alt="Flores decorativas superiores"
+        class="w-48 sm:w-56 md:w-64 lg:w-72 h-auto object-contain"
+      />
+    </div>
+    <!-- CONTENEDOR PRINCIPAL CON PERGAMINO Y PRÍNCIPE -->
+    <div class="relative flex items-center justify-center" id="contenedor-pergamino">
+      
+      <!-- PRÍNCIPE - LADO IZQUIERDO -->
+      <div class="absolute left-0 md:left-8 lg:left-16 bottom-0 z-20 w-32 md:w-48 lg:w-56" id="principe-img">
+        <img
+          src="/imagenes/principe.png"
+          alt="Príncipe"
+          class="w-full h-auto object-contain"
+        />
+      </div>
+
+      <!-- PERGAMINO CON TEXTO -->
+      <div class="relative w-full max-w-2xl" id="pergamino-container">
+        
+        <!-- IMAGEN DEL PERGAMINO -->
+        <div class="relative">
+          <img
+            src="/imagenes/pergamino.png"
+            alt="Pergamino decorativo"
+            class="w-full h-auto object-contain"
+          />
+          
+          <!-- TEXTO SOBRE EL PERGAMINO -->
+          <div class="absolute inset-0 flex items-center justify-center px-10 md:px-16 lg:px-20">
+            <div class="w-full" id="texto-pergamino">
+              <p class="font-charm text-xl sm:text-base md:text-lg lg:text-xl text-[#eb8fa3] text-center leading-relaxed" style="text-shadow:
+  0 0 4px #ffffff,
+  0 0 8px #ffffff,
+  0 0 14px #ffffff,
+  0 0 22px #ffffff;"
+>
+                Los sueños se cumplen y hoy uno de los míos se hace realidad. Con la
+                bendición de Dios y el amor de mi familia, te invito a celebrar mis 15
+                años.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  if (typeof window !== 'undefined') {
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log("📜 Iniciando animación de pergamino...");
+
+      // Estado inicial
+      gsap.set("#pergamino-container", { opacity: 0, scale: 0.8, y: 30 });
+      gsap.set("#texto-pergamino", { opacity: 0, y: 20 });
+      gsap.set("#principe-img", { opacity: 0, x: -50 });
+
+      // ScrollTrigger con entrada y salida
+      ScrollTrigger.create({
+        trigger: "#contenedor-pergamino",
+        start: "top 85%",
+        end: "top 20%",
+        
+        onEnter: () => {
+          console.log("📜 Pergamino apareciendo...");
+          animarEntrada();
+        },
+
+        onLeaveBack: () => {
+          console.log("📜 Pergamino desapareciendo...");
+          animarSalida();
+        },
+      });
+
+      // ANIMACIÓN DE ENTRADA - TODO SIMULTÁNEO
+      function animarEntrada() {
+        const tl = gsap.timeline();
+
+        // Pergamino aparece
+        tl.to("#pergamino-container", {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: 1,
+          ease: "back.out(1.4)",
+        })
+        // Texto aparece simultáneamente
+        .to("#texto-pergamino", {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+        }, "<0.3")
+        // Príncipe entra simultáneamente
+        .to("#principe-img", {
+          opacity: 1,
+          x: 0,
+          duration: 1,
+          ease: "power3.out",
+        }, "<");
+
+        // Animación continua del príncipe (sutil balanceo)
+        gsap.to("#principe-img", {
+          y: -5,
+          duration: 2,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1,
+          delay: 1,
+        });
+      }
+
+      // ANIMACIÓN DE SALIDA
+      function animarSalida() {
+        // Detener animaciones continuas
+        gsap.killTweensOf("#principe-img");
+        
+        const tl = gsap.timeline();
+
+        tl.to("#texto-pergamino", {
+          opacity: 0,
+          y: 20,
+          duration: 0.4,
+          ease: "power2.in",
+        })
+        .to("#principe-img", {
+          opacity: 0,
+          x: -50,
+          duration: 0.4,
+          ease: "power2.in",
+        }, "-=0.3")
+        .to("#pergamino-container", {
+          opacity: 0,
+          scale: 0.8,
+          y: 30,
+          duration: 0.4,
+          ease: "power2.in",
+        }, "-=0.3");
+      }
+
+      console.log("📜✨ ¡Componente pergamino activado!");
+    });
+  }
+</script>
+
+<style>
+  /* Ajustes responsivos para el príncipe */
+  @media (max-width: 768px) {
+    #principe-img {
+      left: -1rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    #principe-img {
+      left: -0.5rem;
+      width: 5rem;
+    }
+  }
+</style>

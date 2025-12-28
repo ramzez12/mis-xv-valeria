@@ -1,33 +1,79 @@
-<section class="py-8 px-4 relative">
-  <div class="max-w-3xl mx-auto">
-    
-    <div class="flex justify-center mb-3" id="flores-arriba-ded">
+---
+// Pergamino.astro
+---
+
+<section class="py-2 md:py-12 relative overflow-hidden">
+  <div class="max-w-5xl mx-auto">
+
+    <div class="flex justify-center" id="flores-arriba-ded">
       <img
         src="/imagenes/FlorSeparador.webp"
         alt="Flores decorativas superiores"
-        class="w-48 sm:w-56 md:w-64 lg:w-72 h-auto object-contain"
+        class="w-40 sm:w-56 md:w-64 lg:w-72 h-auto object-contain"
       />
     </div>
 
-    <div class="text-center px-4">
-      <h2
-        class="font-charm text-xl sm:text-xl md:text-2xl text-[#eb8fa3] leading-relaxed"
-        id="texto-ded"
+    <!-- CONTENEDOR PRINCIPAL CON PERGAMINO Y PRÍNCIPE -->
+    <div
+      class="relative flex items-center justify-center"
+      id="contenedor-pergamino"
+    >
+      <!-- PRÍNCIPE - LADO IZQUIERDO -->
+      <div
+        class="absolute left-0 md:left-8 lg:left-16 bottom-0 z-20 w-28 md:w-48 lg:w-56"
+        id="principe-img"
       >
-        Los sueños se cumplen y hoy uno de los míos se hace realidad. Con la
-        bendición de Dios y el amor de mi familia, te invito a celebrar mis 15
-        años.
-      </h2>
-    </div>
+        <img
+          src="/imagenes/principe.png"
+          alt="Príncipe"
+          class="w-full h-40 object-contain"
+        />
+      </div>
 
-    <div class="flex justify-center mt-3" id="flores-abajo-ded">
-      <img
-        src="/imagenes/FlorSeparador.webp"
-        alt="Fores decorativas inferiores"
-        class="w-48 sm:w-56 md:w-64 lg:w-72 h-auto object-contain scale-y-[-1]"
-      />
-    </div>
+      <!-- PRINCESA - LADO DERECHO -->
+      <div
+        class="absolute right-0 md:right-8 lg:right-16 bottom-0 z-20 w-32 md:w-48 lg:w-56"
+        id="princesa-img"
+      >
+        <img
+          src="/imagenes/b.png"
+          alt="Princesa"
+          class="w-full h-auto object-contain"
+        />
+      </div>
 
+      <!-- PERGAMINO CON TEXTO -->
+      <div class="relative w-full max-w-2xl" id="pergamino-container">
+        <!-- IMAGEN DEL PERGAMINO -->
+        <div class="relative px-4">
+          <img
+            src="/imagenes/pergamino.png"
+            alt="Pergamino decorativo"
+            class="w-full h-auto object-contain"
+          />
+
+          <!-- TEXTO SOBRE EL PERGAMINO -->
+          <div
+            class="absolute inset-0 flex items-center justify-center px-16 md:px-16 lg:px-20"
+          >
+            <div class="w-full" id="texto-pergamino">
+              <p
+                class="font-charm text-xl sm:text-base md:text-lg lg:text-xl text-[#eb8fa3] text-center leading-relaxed"
+                style="text-shadow:
+  0 0 4px #ffffff,
+  0 0 8px #ffffff,
+  0 0 14px #ffffff,
+  0 0 22px #ffffff;"
+              >
+                Los sueños se cumplen y hoy uno de los míos se hace realidad.
+                Con la bendición de Dios y el amor de mi familia, te invito a
+                celebrar mis 15 años.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -37,82 +83,171 @@
 
   gsap.registerPlugin(ScrollTrigger);
 
-  document.addEventListener("DOMContentLoaded", () => {
-    console.log("💐 Iniciando animaciones de dedicatoria...");
+  if (typeof window !== "undefined") {
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log("📜 Iniciando animación de pergamino...");
 
-    // Estado inicial - Todo oculto
-    // Las flores de arriba se van hacia arriba (-30), el texto y las flores de abajo hacia abajo (+30)
-    gsap.set("#flores-arriba-ded", { opacity: 0, y: -30 });
-    gsap.set("#texto-ded", { opacity: 0, y: 30 });
-    gsap.set("#flores-abajo-ded", { opacity: 0, y: 30 });
+      // Estado inicial
+      gsap.set("#pergamino-container", { opacity: 0, scale: 0.8, y: 30 });
+      gsap.set("#texto-pergamino", { opacity: 0, y: 20 });
+      gsap.set("#principe-img", { opacity: 0, x: -50 });
+      gsap.set("#princesa-img", { opacity: 0, x: 50 });
 
-    // ScrollTrigger con entrada y salida
-    ScrollTrigger.create({
-      trigger: "#texto-ded",
-      start: "top 100%", // Cuando el trigger toca el borde inferior de la ventana
-      end: "top 20%", // Desaparece cuando el trigger llega al 20% superior de la ventana
-      
-      onEnter: () => {
-        console.log("💐 Dedicatoria apareciendo...");
-        animarEntrada();
-      },
+      // ScrollTrigger con entrada y salida
+      ScrollTrigger.create({
+        trigger: "#contenedor-pergamino",
+        start: "top 85%",
+        end: "top 20%",
 
-      onLeaveBack: () => {
-        console.log("💐 Dedicatoria desapareciendo...");
-        animarSalida();
-      },
+        onEnter: () => {
+          console.log("📜 Pergamino apareciendo...");
+          animarEntrada();
+        },
+
+        onLeaveBack: () => {
+          console.log("📜 Pergamino desapareciendo...");
+          animarSalida();
+        },
+      });
+
+      // ANIMACIÓN DE ENTRADA - TODO SIMULTÁNEO
+      function animarEntrada() {
+        const tl = gsap.timeline();
+
+        // Pergamino aparece
+        tl.to("#pergamino-container", {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: 1,
+          ease: "back.out(1.4)",
+        })
+          // Texto aparece simultáneamente
+          .to(
+            "#texto-pergamino",
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: "power2.out",
+            },
+            "<0.3"
+          )
+          // Príncipe entra simultáneamente
+          .to(
+            "#principe-img",
+            {
+              opacity: 1,
+              x: 0,
+              duration: 1,
+              ease: "power3.out",
+            },
+            "<"
+          )
+          // Princesa entra simultáneamente desde la derecha
+          .to(
+            "#princesa-img",
+            {
+              opacity: 1,
+              x: 0,
+              duration: 1,
+              ease: "power3.out",
+            },
+            "<"
+          );
+
+        // Animación continua del príncipe (sutil balanceo)
+        gsap.to("#principe-img", {
+          y: -5,
+          duration: 2,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1,
+          delay: 1,
+        });
+
+        // Animación continua de la princesa (sutil balanceo)
+        gsap.to("#princesa-img", {
+          y: -5,
+          duration: 2.2,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1,
+          delay: 1.1,
+        });
+      }
+
+      // ANIMACIÓN DE SALIDA
+      function animarSalida() {
+        // Detener animaciones continuas
+        gsap.killTweensOf("#principe-img");
+        gsap.killTweensOf("#princesa-img");
+
+        const tl = gsap.timeline();
+
+        tl.to("#texto-pergamino", {
+          opacity: 0,
+          y: 20,
+          duration: 0.4,
+          ease: "power2.in",
+        })
+          .to(
+            "#principe-img",
+            {
+              opacity: 0,
+              x: -50,
+              duration: 0.4,
+              ease: "power2.in",
+            },
+            "-=0.3"
+          )
+          .to(
+            "#princesa-img",
+            {
+              opacity: 0,
+              x: 50,
+              duration: 0.4,
+              ease: "power2.in",
+            },
+            "-=0.4"
+          )
+          .to(
+            "#pergamino-container",
+            {
+              opacity: 0,
+              scale: 0.8,
+              y: 30,
+              duration: 0.4,
+              ease: "power2.in",
+            },
+            "-=0.3"
+          );
+      }
+
+      console.log("📜✨ ¡Componente pergamino activado!");
     });
-
-    // ANIMACIÓN DE ENTRADA (ahora todos al mismo tiempo)
-    function animarEntrada() {
-      const tl = gsap.timeline();
-
-      // INICIAMOS LA ANIMACIÓN DE LA FLOR SUPERIOR
-      tl.to("#flores-arriba-ded", {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power2.out",
-      })
-      // AL MISMO TIEMPO (usando "<") animamos el TEXTO
-      .to("#texto-ded", {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        ease: "power2.out",
-      }, "<") // <-- ¡CLAVE! Esto hace que inicie al mismo tiempo que la animación anterior.
-      // AL MISMO TIEMPO (usando "<") animamos la FLOR INFERIOR
-      .to("#flores-abajo-ded", {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power2.out",
-      }, "<"); // <-- ¡CLAVE! Esto hace que inicie al mismo tiempo que la animación anterior.
-    }
-
-    // ANIMACIÓN DE SALIDA (se mantiene secuencial como estaba, desapareciendo de abajo hacia arriba)
-    function animarSalida() {
-      const tl = gsap.timeline();
-
-      // Todo desaparece rápido
-      tl.to("#flores-abajo-ded", {
-        opacity: 0,
-        y: 30,
-        duration: 0.4,
-        ease: "power2.in",
-      })
-      .to("#texto-ded", {
-        opacity: 0,
-        y: 30,
-        duration: 0.4,
-        ease: "power2.in",
-      }, "-=0.3")
-      .to("#flores-arriba-ded", {
-        opacity: 0,
-        y: -30,
-        duration: 0.4,
-        ease: "power2.in",
-      }, "-=0.3");
-    }
-  });
+  }
 </script>
+
+<style>
+  /* Ajustes responsivos para príncipe y princesa */
+  @media (max-width: 768px) {
+    #principe-img {
+      left: -1rem;
+    }
+    #princesa-img {
+      right: -1rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    #principe-img {
+      left: -0.5rem;
+      width: 5rem;
+    }
+    #princesa-img {
+      right: -0.5rem;
+      width: 5rem;
+    }
+  }
+</style>
